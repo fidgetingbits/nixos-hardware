@@ -19,7 +19,7 @@
   boot.kernelModules = ["kvm-intel" "xe"];
 
   # 6.8 and newer kernels have new Iris XE graphics support
-  boot.kernelParams = [ "i915.force_probe=!9a49" "xe.force_probe=9a49" ]
+  boot.kernelParams = [ "i915.force_probe=!9a49" "xe.force_probe=9a49" ];
 
 
   services.thermald.enable = lib.mkDefault true;
