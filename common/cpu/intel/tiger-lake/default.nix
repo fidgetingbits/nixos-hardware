@@ -6,8 +6,8 @@ in
   config = lib.mkMerge [
     (lib.mkIf hasXeDriver {
       # Favor xe driver over i915 if it exists
-      config.hardware.intelgpu.loadXeInInitrd = true;
-      config.hardware.intelgpu.loadInInitrd = false;
+      hardware.intelgpu.loadXeInInitrd = true;
+      hardware.intelgpu.loadInInitrd = false;
     })
     (lib.mkIf (!hasXeDriver) { boot.kernelParams = [ "i915.enable_guc=3" ]; })
     { imports = [ ../. ]; }
