@@ -4,23 +4,19 @@
   pkgs,
   inputs,
   ...
-}: {
+}:
+{
   imports = [
-    # FIXME: Add tiger lake folder
-    # FIXME: Add iris xe graphics test
-    ../../../common/cpu/intel
+    ../../../common/cpu/intel/tiger-lake
     ../../../common/pc/laptop
     ../../../common/pc/laptop/ssd
   ];
   hardware.enableRedistributableFirmware = lib.mkDefault true;
 
-  boot.initrd.kernelModules = ["xe"];
+  boot.kernelParams = lib.mkIf config.hardware.intelgpu.loadXeInInitrd [ "i915.force_probe=!9a49" "xe.force_probe=9a49" ];
+
   boot.initrd.availableKernelModules = ["xhci_pci" "thunderbolt" "vmd" "nvme" "usb_storage" "sd_mod"];
-  boot.kernelModules = ["kvm-intel" "xe"];
-
-  # 6.8 and newer kernels have new Iris XE graphics support
-  boot.kernelParams = [ "i915.force_probe=!9a49" "xe.force_probe=9a49" ];
-
+  boot.kernelModules = ["kvm-intel"];
 
   services.thermald.enable = lib.mkDefault true;
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
