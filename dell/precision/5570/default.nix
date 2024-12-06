@@ -13,7 +13,9 @@
     ../../../common/gpu/nvidia/prime-sync.nix
   ];
 
-  boot.kernelParams = lib.mkIf config.hardware.intelgpu.loadXeInInitrd [
+  hardware.intelgpu.driver = lib.mkIf (lib.versionAtLeast config.boot.kernelPackages.kernel.version "6.8") "xe";
+
+  boot.kernelParams = lib.mkIf (config.hardware.intelgpu.driver == "xe") [
     "i915.force_probe=!9a49"
     "xe.force_probe=9a49"
   ];
